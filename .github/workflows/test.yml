@@ -12,4 +12,10 @@ jobs:
       - name: Run a multi-line script
         run: |
           sudo snap install microceph
-          sudo microceph cluster bootstrap
+          microceph cluster bootstrap
+          microceph disk add loop,4G,3
+          microceph enable rgw
+          microceph status
+          radosgw-admin user create --uid=osnadmin --display-name="osnadmin" --access-key="osnadmindev" --secret="osnadmindevsecret"
+          radosgw-admin caps add --uid=osnadmin --caps="buckets=read;metadata=read;usage=read;users=*"
+          radosgw-admin quota enable --quota-scope=bucket --uid=osnadmin
